@@ -4,6 +4,8 @@ const Footer: React.FC = () => {
 
   return (
     <DefaultFooter
+      style={{
+        backgroundColor: 'transparent'}}
       copyright={'苏州大学数学科学学院'}
       links={[
         {
@@ -15,7 +17,7 @@ const Footer: React.FC = () => {
         {
           key: '苏州大学数学科学学院',
           title: '苏州大学数学科学学院',
-          href: 'https://ant.design',
+          href: 'http://math.suda.edu.cn/',
           blankTarget: true,
         },
       ]}
