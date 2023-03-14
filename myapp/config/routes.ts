@@ -32,6 +32,21 @@
         component: './Welcome',
       },
       {
+        path: '/admin/chart',
+        name: 'chart',
+        component: './chart',
+      },
+      {
+        path: '/admin/chart2',
+        name: 'chart2',
+        component: './chart2',
+      },
+      {
+        path: '/admin/chart3',
+        name: 'chart3',
+        component: './chart3',
+      },
+      {
         component: './404',
       },
     ],
