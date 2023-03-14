@@ -103,13 +103,13 @@ const Login: React.FC = () => {
                 defaultMessage: '账户密码登录',
               })}
             />
-            <Tabs.TabPane
+            {/* <Tabs.TabPane
               key="mobile"
               tab={intl.formatMessage({
                 id: 'pages.login.phoneLogin.tab',
                 defaultMessage: '手机号登录',
               })}
-            />
+            /> */}
           </Tabs>
 
           {status === 'error' && loginType === 'account' && (
@@ -170,7 +170,7 @@ const Login: React.FC = () => {
           )}
 
           {status === 'error' && loginType === 'mobile' && <LoginMessage content="验证码错误" />}
-          {type === 'mobile' && (
+          {/* {type === 'mobile' && (
             <>
               <ProFormText
                 fieldProps={{
@@ -250,7 +250,7 @@ const Login: React.FC = () => {
                 }}
               />
             </>
-          )}
+          )} */}
           <div
             style={{
               marginBottom: 24,
