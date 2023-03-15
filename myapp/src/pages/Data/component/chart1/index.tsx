@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pie } from '@ant-design/charts';
 
-const chart: React.FC = () => {
+const Chart1: React.FC = () => {
   var data = [
     {
       type: '分类一',
@@ -43,4 +43,4 @@ const chart: React.FC = () => {
   return <Pie {...config} />;
 };
 
-export default chart;
+export default Chart1;

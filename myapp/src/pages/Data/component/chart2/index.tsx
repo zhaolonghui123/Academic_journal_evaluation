@@ -1,7 +1,7 @@
 import React from 'react';
 import { Line } from '@ant-design/charts';
 
-const chart2: React.FC = () => {
+const Chart2: React.FC = () => {
   const data = [
     { year: '1991', value: 3 },
     { year: '1992', value: 4 },
@@ -15,7 +15,7 @@ const chart2: React.FC = () => {
   ];
   const config = {
     data,
-    height: 400,
+    //height: 400,
     xField: 'year',
     yField: 'value',
     point: {
@@ -25,4 +25,4 @@ const chart2: React.FC = () => {
   };
   return <Line {...config} />;
 };
-export default chart2;
+export default Chart2;

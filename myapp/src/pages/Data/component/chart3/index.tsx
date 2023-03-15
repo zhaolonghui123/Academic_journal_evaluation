@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { Radar } from '@ant-design/plots';
 
 const DemoRadar = () => {
@@ -50,7 +49,7 @@ const DemoRadar = () => {
 
   return <Radar {...config} />;
 };
-const chart3: React.FC = () => {
+const Chart3: React.FC = () => {
   return <DemoRadar />;
 };
-export default chart3;
+export default Chart3;

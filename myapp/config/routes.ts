@@ -25,32 +25,48 @@
     icon: 'crown',
     access: 'canAdmin',
     routes: [
+      // {
+      //   path: '/admin/UserManagemnt',
+      //   name: 'UserManagemnt',
+      //   icon: 'smile',
+      //   component: './UserManagemnt',
+      // },
       {
-        path: '/admin/sub-page',
-        name: 'sub-page',
-        icon: 'smile',
-        component: './Welcome',
+        path: '/admin/UserManagement',
+        name: 'UserManagement',
+        component: './UserManagement',
       },
       {
-        path: '/admin/chart',
-        name: 'chart',
-        component: './chart',
-      },
-      {
-        path: '/admin/chart2',
-        name: 'chart2',
-        component: './chart2',
-      },
-      {
-        path: '/admin/chart3',
-        name: 'chart3',
-        component: './chart3',
+        path: '/admin/OperatingRecord',
+        name: 'OperatingRecord',
+        component: './OperatingRecord',
       },
       {
         component: './404',
       },
     ],
   },
+  {
+    name: 'Data',
+    path: '/Data',
+    icon: 'AreaChartOutlined',
+    component: './Data',
+  },
+  // {
+  //   name: 'DataManagement',
+  //   path: '/DataManagement',
+  //   //icon: 'FundTwoTone',
+  //   rount:[
+  //     {
+  //       path: '/DataManagement/Data',
+  //       name: 'Data',
+  //       component: '/DataManagement/Data',
+  //     },
+  //     {
+  //       component: '/404',
+  //     },
+  //   ]
+  // },
   {
     name: 'list.table-list',
     icon: 'table',
