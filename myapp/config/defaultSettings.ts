@@ -15,7 +15,7 @@ const Settings: LayoutSettings & {
   title: 'Academic journal evaluation',
   headerHeight: 64,
   pwa: false,
-  //logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
+  logo: '/favicon2.png',
   iconfontUrl: '',
 };
 

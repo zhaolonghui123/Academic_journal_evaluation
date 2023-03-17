@@ -85,7 +85,7 @@ const Login: React.FC = () => {
       </div>
       <div className={styles.content}>
         <LoginForm
-          //logo={<img alt="logo" src="/logo.svg" />}
+          logo={<img alt="logo" src="/favicon2.png" />}
           title="Academic journal evaluation"
           subTitle={' '}
           initialValues={{
