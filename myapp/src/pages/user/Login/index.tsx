@@ -103,13 +103,6 @@ const Login: React.FC = () => {
                 defaultMessage: '账户密码登录',
               })}
             />
-            {/* <Tabs.TabPane
-              key="mobile"
-              tab={intl.formatMessage({
-                id: 'pages.login.phoneLogin.tab',
-                defaultMessage: '手机号登录',
-              })}
-            /> */}
           </Tabs>
 
           {status === 'error' && loginType === 'account' && (
