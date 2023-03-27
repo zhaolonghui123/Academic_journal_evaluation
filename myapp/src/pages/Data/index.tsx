@@ -1,23 +1,26 @@
 import Chart2 from './component/chart2';
 import Chart3 from './component/chart3';
 import { Card, Select, Space } from 'antd';
+import { useState,useEffect } from 'react';
 import React from 'react';
+import { journalURL } from '@/services/url';
+import axios from "axios"
 import Chart1 from './component/chart1';
 const handleChange = (value: string) => {
   console.log(`selected ${value}`);
 };
-const data1 = [
-  { year: '2016', value: 3 },
-  { year: '2017', value: 4 },
-  { year: '2018', value: 3.5 },
-  { year: '2019', value: 5 },
-  { year: '2020', value: 4.9 },
-  { year: '2021', value: 6 },
-  { year: '2022', value: 7 },
-  { year: '2023', value: 9 },
-];
-const Data: React.FC = () => (
-  <>
+// const data1 = [
+// ];
+const Data: React.FC = () => {
+  const [data1,SetData1] = useState([])
+  useEffect(()=>{
+    axios.get(journalURL.getOnePapercount+"?journalname="+"中学数学月刊")
+    .then((res)=>{
+      SetData1(res.data)
+    })
+  })
+  
+  return (<>
     <Card title="折线" bordered={false} >
       <Chart2 data={data1} />
       
@@ -53,7 +56,8 @@ const Data: React.FC = () => (
       <Chart1/>
       <p>Card content</p>
     </Card>
-  </>
-);
+  </>)
+}
+
 
 export default Data;

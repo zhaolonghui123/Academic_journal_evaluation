@@ -1,64 +1,57 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { Space, Table, Tag } from 'antd';
+import axios from "axios";
+import { userURL } from '@/services/url';
 import type { ColumnsType } from 'antd/es/table';
 
 interface DataType {
-  key: string;
-  name: string;
-  age: number;
-  address: string;
+  username: string;
+  password: string;
+  isAdmin: number;
+  phone: string;
+  email: string; 
 }
 
 const columns: ColumnsType<DataType> = [
   {
-    title: 'Name',
-    dataIndex: 'name',
-    key: 'name',
+    title: 'username',
+    dataIndex: 'username',
+    key: 'username',
     render: (text) => <a>{text}</a>,
   },
   {
-    title: 'Age',
-    dataIndex: 'age',
-    key: 'age',
+    title: 'password',
+    dataIndex: 'password',
+    key: 'password',
   },
   {
-    title: 'Address',
-    dataIndex: 'address',
-    key: 'address',
+    title: 'isAdmin',
+    dataIndex: 'isAdmin',
+    key: 'isAdmin',
   },
   {
-    title: 'Action',
-    key: 'action',
-    render: () => (
-      <Space size="middle">
-        <a>Delete</a>
-      </Space>
-    ),
+    title: 'phone',
+    dataIndex: 'phone',
+    key: 'phone',
+  },
+  {
+    title: 'email',
+    dataIndex: 'email',
+    key: 'email',
   },
 ];
 
-const data: DataType[] = [
-  {
-    key: '1',
-    name: 'John Brown',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    age: 42,
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    age: 32,
-    address: 'Sydney No. 1 Lake Park',
+const initdata: DataType[] = []
 
-  },
-];
-
-const UserManagement: React.FC = () => <Table columns={columns} dataSource={data} />;
+const UserManagement: React.FC = () =>{
+  const [data,setData] = useState(initdata)
+  useEffect(()=>{
+    axios.get(userURL.getAllUser)
+    .then((res)=>{
+      setData(res.data)
+    })
+  },[])
+  return  <Table columns={columns} dataSource={data} />;
+}
 
 export default UserManagement;
