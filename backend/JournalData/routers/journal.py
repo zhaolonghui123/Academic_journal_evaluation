@@ -1,8 +1,10 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter,Depends,Response
 from JournalData import models,schemas
 from User.database import SessionLocal
 from sqlalchemy.orm import Session
-
+from fastapi.responses import FileResponse
+import os
+from pathlib import Path
 router = APIRouter()
 
 def get_db():
@@ -31,6 +33,13 @@ def create_paper_count(papercount: schemas.papercount, db: Session = Depends(get
         'error': 0,
         'data': 'success'
     }
+
+
+@router.get("/pdf/{filename}")
+async def get_pdf(filename: str):
+    # 获取 PDF 文件路径
+    pdf_path = "C:/Users/Admin/Desktop/Academic_journal_evaluation/backend/Journalpdf/"+filename+".pdf"
+    return FileResponse(pdf_path,media_type='application/pdf')
 @router.get("/get_one")
 def get_journal_paper_count(journalname:str,db: Session = Depends(get_db)):
     paper_count = db.query(models.Journal).filter(models.Journal.journalname == journalname).first()
@@ -44,12 +53,118 @@ def get_journal_paper_count(journalname:str,db: Session = Depends(get_db)):
     return data
 
 @router.get("/get")
-def get_user(db: Session = Depends(get_db)):
-    users = db.query(models.Journal).all()
-    return users
+def get_journal_paper_count(db: Session = Depends(get_db)):
+    paper_count = db.query(models.Journal).all()
+    return paper_count
 
 @router.delete('/delete')
-def del_user(journalname:str,db: Session = Depends(get_db)):
+def del_journal_paper_count(journalname:str,db: Session = Depends(get_db)):
     db.query(models.Journal).filter(models.Journal.journalname == journalname).delete(synchronize_session=False)
     db.commit()
     return {"msg": "已经删除"}
+
+@router.get('/test')
+def get_test(db: Session = Depends(get_db)):
+    data = [
+  {
+    "item": "Design",
+    "user": "a",
+    "score": 70
+  },
+  {
+    "item": "Design",
+    "user": "b",
+    "score": 30
+  },
+  {
+    "item": "Development",
+    "user": "a",
+    "score": 60
+  },
+  {
+    "item": "Development",
+    "user": "b",
+    "score": 70
+  },
+  {
+    "item": "Marketing",
+    "user": "a",
+    "score": 50
+  },
+  {
+    "item": "Marketing",
+    "user": "b",
+    "score": 60
+  },
+  {
+    "item": "Users",
+    "user": "a",
+    "score": 40
+  },
+  {
+    "item": "Users",
+    "user": "b",
+    "score": 50
+  },
+  {
+    "item": "Test",
+    "user": "a",
+    "score": 60
+  },
+  {
+    "item": "Test",
+    "user": "b",
+    "score": 70
+  },
+  {
+    "item": "Language",
+    "user": "a",
+    "score": 70
+  },
+  {
+    "item": "Language",
+    "user": "b",
+    "score": 50
+  },
+  {
+    "item": "Technology",
+    "user": "a",
+    "score": 50
+  },
+  {
+    "item": "Technology",
+    "user": "b",
+    "score": 40
+  },
+  {
+    "item": "Support",
+    "user": "a",
+    "score": 30
+  },
+  {
+    "item": "Support",
+    "user": "b",
+    "score": 40
+  },
+  {
+    "item": "Sales",
+    "user": "a",
+    "score": 60
+  },
+  {
+    "item": "Sales",
+    "user": "b",
+    "score": 40
+  },
+  {
+    "item": "UX",
+    "user": "a",
+    "score": 50
+  },
+  {
+    "item": "UX",
+    "user": "b",
+    "score": 60
+  }
+]
+    return data

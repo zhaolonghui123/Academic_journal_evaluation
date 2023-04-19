@@ -1,32 +1,54 @@
 import Chart2 from './component/chart2';
 import Chart3 from './component/chart3';
-import { Card, Select, Space } from 'antd';
+import { Card, Select, Space, Typography } from 'antd';
 import { useState,useEffect } from 'react';
 import React from 'react';
 import { journalURL } from '@/services/url';
 import axios from "axios"
 import Chart1 from './component/chart1';
+import { ProCard } from '@ant-design/pro-components';
 const handleChange = (value: string) => {
   console.log(`selected ${value}`);
 };
 // const data1 = [
 // ];
 const Data: React.FC = () => {
+  
   const [data1,SetData1] = useState([])
+  const [data2,SetData2] = useState([])
   useEffect(()=>{
     axios.get(journalURL.getOnePapercount+"?journalname="+"中学数学月刊")
     .then((res)=>{
       SetData1(res.data)
-    })
-  })
+    });
+    axios.get(journalURL.gettest)
+    .then((res)=>{
+      SetData2(res.data)
+    });
+  },[])
   
   return (<>
-    <Card title="折线" bordered={false} >
-      <Chart2 data={data1} />
-      
-    </Card>
+    <ProCard
+      tabs={{
+        type: 'card',
+      }}
+    >
+      <ProCard.TabPane key="tab1" tab="引用量" style={{ padding: '20px',borderRadius: '5px',  border: '1px solid #ccc'}}>
+          <Chart2 data={data1} />
+      </ProCard.TabPane>
+      <ProCard.TabPane key="tab2" tab="被摘量">
+          <Chart2 data={data1} />
+      </ProCard.TabPane>
+      <ProCard.TabPane key="tab3" tab="影响因子">
+          <Chart2 data={data1} />
+      </ProCard.TabPane>
+      <ProCard.TabPane key="tab4" tab="H指数">
+          <Chart2 data={data1} />
+      </ProCard.TabPane>
+    </ProCard>
+    
     <Card title="雷达" bordered={false} >
-      <Chart3/>
+      <Chart3 data={data2}/>
       <div >
         <Space align="center">
           <Select
@@ -55,6 +77,9 @@ const Data: React.FC = () => {
     <Card title="饼图" bordered={false} >
       <Chart1/>
       <p>Card content</p>
+    </Card>
+    <Card>
+      <Typography.Link href="http://127.0.0.1:8080/api/journal/pdf/影响因子年报2021" target="_blank">原文</Typography.Link>
     </Card>
   </>)
 }

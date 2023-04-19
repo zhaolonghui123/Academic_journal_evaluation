@@ -17,6 +17,7 @@ app.include_router(Journal_router,prefix="/api")
 
 origins = [
     "http://localhost:8000",
+    "http://localhost:8002",
 ]
 app.add_middleware(
     CORSMiddleware,

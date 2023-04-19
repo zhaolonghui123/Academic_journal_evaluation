@@ -22,6 +22,7 @@ const Chart2: React.FC<dataProps> = ({data:data}) => {
       size: 5,
       shape: 'diamond',
     },
+
   };
   return <Line {...config} />;
 };

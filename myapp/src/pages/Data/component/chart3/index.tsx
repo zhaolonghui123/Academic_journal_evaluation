@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+//import React, { useState, useEffect } from 'react';
 import { Radar } from '@ant-design/plots';
+import { dataProps } from './types';
+//影响因子,被摘量,被引量
+const Chart3: React.FC<dataProps> = ({data:data}) => {
+  // const [data, setData] = useState([]);
 
-const DemoRadar = () => {
-  const [data, setData] = useState([]);
+  // useEffect(() => {
+  //   asyncFetch();
+  // }, []);
 
-  useEffect(() => {
-    asyncFetch();
-  }, []);
-
-  const asyncFetch = () => {
-    fetch('https://gw.alipayobjects.com/os/antfincdn/svFjSfJkYy/radar.json')
-      .then((response) => response.json())
-      .then((json) => setData(json))
-      .catch((error) => {
-        console.log('fetch data failed', error);
-      });
-  };
+  // const asyncFetch = () => {
+  //   fetch('https://gw.alipayobjects.com/os/antfincdn/svFjSfJkYy/radar.json')
+  //     .then((response) => response.json())
+  //     .then((json) => setData(json))
+  //     .catch((error) => {
+  //       console.log('fetch data failed', error);
+  //     });
+  // };
   const config = {
     data,
     xField: 'item',
@@ -49,7 +50,5 @@ const DemoRadar = () => {
 
   return <Radar {...config} />;
 };
-const Chart3: React.FC = () => {
-  return <DemoRadar />;
-};
+
 export default Chart3;

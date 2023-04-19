@@ -63,6 +63,7 @@
     "react-dev-inspector": "^1.7.0",
     "react-dom": "^17.0.0",
     "react-helmet-async": "^1.2.0",
+    "react-pdf": "^6.2.2",
     "umi": "^3.5.0"
   },
   "devDependencies": {
@@ -76,6 +77,7 @@
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/react-helmet": "^6.1.0",
+    "@types/react-pdf": "^6.2.0",
     "@umijs/fabric": "^2.11.1",
     "@umijs/openapi": "^1.6.0",
     "@umijs/plugin-blocks": "^2.2.0",
