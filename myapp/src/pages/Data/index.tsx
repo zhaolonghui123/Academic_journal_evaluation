@@ -17,7 +17,7 @@ const Data: React.FC = () => {
   const [data1,SetData1] = useState([])
   const [data2,SetData2] = useState([])
   useEffect(()=>{
-    axios.get(journalURL.getOnePapercount+"?journalname="+"中学数学月刊")
+    axios.get(journalURL.getPapercount)
     .then((res)=>{
       SetData1(res.data)
     });
@@ -36,13 +36,13 @@ const Data: React.FC = () => {
       <ProCard.TabPane key="tab1" tab="引用量" style={{ padding: '20px',borderRadius: '5px',  border: '1px solid #ccc'}}>
           <Chart2 data={data1} />
       </ProCard.TabPane>
-      <ProCard.TabPane key="tab2" tab="被摘量">
+      <ProCard.TabPane key="tab2" tab="被摘量" style={{ padding: '20px',borderRadius: '5px',  border: '1px solid #ccc'}}>
           <Chart2 data={data1} />
       </ProCard.TabPane>
-      <ProCard.TabPane key="tab3" tab="影响因子">
+      <ProCard.TabPane key="tab3" tab="影响因子" style={{ padding: '20px',borderRadius: '5px',  border: '1px solid #ccc'}}>
           <Chart2 data={data1} />
       </ProCard.TabPane>
-      <ProCard.TabPane key="tab4" tab="H指数">
+      <ProCard.TabPane key="tab4" tab="H指数" style={{ padding: '20px',borderRadius: '5px',  border: '1px solid #ccc'}}>
           <Chart2 data={data1} />
       </ProCard.TabPane>
     </ProCard>

@@ -33,7 +33,21 @@ def create_paper_count(papercount: schemas.papercount, db: Session = Depends(get
         'error': 0,
         'data': 'success'
     }
-
+@router.post("/update")
+async def update(papercount:schemas.papercount,db: Session = Depends(get_db)):
+    db_Journal = db.query(models.Journal).filter(models.Journal.journalname == papercount.journalname).first()
+    db_Journal.journalname = papercount.journalname
+    db_Journal.year1 = papercount.year1
+    db_Journal.year2 = papercount.year2
+    db_Journal.year3 = papercount.year3
+    db_Journal.year4 = papercount.year4
+    db_Journal.year5 = papercount.year5
+    db_Journal.year6 = papercount.year6
+    db.commit()
+    return {
+        'error': 0,
+        'data': 'success'
+    }
 
 @router.get("/pdf/{filename}")
 async def get_pdf(filename: str):
@@ -55,7 +69,15 @@ def get_journal_paper_count(journalname:str,db: Session = Depends(get_db)):
 @router.get("/get")
 def get_journal_paper_count(db: Session = Depends(get_db)):
     paper_count = db.query(models.Journal).all()
-    return paper_count
+    data= []
+    for item in paper_count:
+        data.append({'year': 2018, 'value': item.year1,'category':item.journalname})
+        data.append({'year': 2019, 'value': item.year2,'category':item.journalname})
+        data.append({'year': 2020, 'value': item.year3,'category':item.journalname})
+        data.append({'year': 2021, 'value': item.year4,'category':item.journalname})
+        data.append({'year': 2022, 'value': item.year5,'category':item.journalname})
+        data.append({'year': 2023, 'value': item.year6,'category':item.journalname})
+    return data
 
 @router.delete('/delete')
 def del_journal_paper_count(journalname:str,db: Session = Depends(get_db)):

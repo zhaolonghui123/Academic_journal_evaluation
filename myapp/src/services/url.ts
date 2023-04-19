@@ -7,5 +7,6 @@ export const userURL = {
 
 export const journalURL = {
     getOnePapercount: baseURL + "/journal/get_one",
+    getPapercount:baseURL + "/journal/get",
     gettest: baseURL + "/journal/test"
 }

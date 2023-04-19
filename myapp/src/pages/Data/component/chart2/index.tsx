@@ -18,6 +18,7 @@ const Chart2: React.FC<dataProps> = ({data:data}) => {
     //height: 400,
     xField: 'year',
     yField: 'value',
+    seriesField: 'category',
     point: {
       size: 5,
       shape: 'diamond',
