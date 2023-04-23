@@ -1,42 +1,32 @@
 import { Table, Input, Typography } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { journalURL } from '@/services/url';
 
 interface RowData {
   id: number;
   paperName: string;
   authors: string[];
+  journalname: string;
   publishTime: string;
   downloads: number;
 }
 
-const data: RowData[] = [
+const datatest: RowData[] = [
   {
     id: 1,
     paperName: '影响因子年报2021',
     authors: ['作者1', '作者2'],
+    journalname: '中学数学月刊',
     publishTime: '2022-01-01',
     downloads: 100,
-  },
-  {
-    id: 2,
-    paperName: '论文 B',
-    authors: ['作者3', '作者4'],
-    publishTime: '2022-02-02',
-    downloads: 200,
-  },
-  {
-    id: 3,
-    paperName: '论文 C',
-    authors: ['作者5', '作者6'],
-    publishTime: '2022-03-03',
-    downloads: 300,
-  },
+  }
 ];
 
 const TableList: React.FC = () => {
   const [searchText, setSearchText] = useState('');
-
+  const [data,setdata] = useState(datatest)
   const handleSearch = (value: string) => {
     setSearchText(value);
   };
@@ -113,7 +103,39 @@ const TableList: React.FC = () => {
       dataIndex: 'publishTime',
       key: 'publishTime',
       sorter: (a: RowData, b: RowData) =>
-        Date.parse(a.publishTime) - Date.parse(b.publishTime),
+      Date.parse(a.publishTime.replace('年', '/').replace('期', '/1')) - Date.parse(b.publishTime.replace('年', '/').replace('期', '/1')),
+    },
+    {
+      title: '发表期刊',
+      dataIndex: 'journalname',
+      key: 'journalname',
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }: {
+        setSelectedKeys: any;
+        selectedKeys: any;
+        confirm: any;
+        clearFilters: any;
+      }) => (
+        <div style={{ padding: 8 }}>
+          <Input
+            placeholder="搜索期刊名"
+            value={selectedKeys[0]}
+            onChange={(e) =>
+              setSelectedKeys(e.target.value ? [e.target.value] : [])
+            }
+            onPressEnter={() => confirm()}
+            style={{ marginBottom: 8, display: 'block' }}
+          />
+          <button onClick={() => clearFilters()}>重置</button>
+          <button onClick={() => confirm()}>搜索</button>
+        </div>
+      ),
+      onFilter: (value: string | number | boolean | undefined, record: RowData) =>
+        record.paperName.toLowerCase().includes(String(value).toLowerCase()),
     },
     {
       title: '下载量',
@@ -132,7 +154,12 @@ const TableList: React.FC = () => {
   const onSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     handleSearch(e.target.value);
   };
-
+  useEffect(()=>{
+    axios.get(journalURL.getjournalInfo)
+    .then((res)=>{
+      setdata(res.data)
+    });
+  },[])
   const filteredData = data.filter(
     (record) =>
       searchText === '' ||

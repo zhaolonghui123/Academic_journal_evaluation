@@ -3,6 +3,7 @@ import logging
 import uvicorn
 from User.routers import router as user_router
 from JournalData.routers import router as Journal_router
+from JournalInformation.routers import router as  Journalinformation_router
 from fastapi import FastAPI
 import User,JournalData
 from User.database import engine
@@ -14,6 +15,7 @@ User.models.Base.metadata.create_all(engine)
 JournalData.models.Base.metadata.create_all(engine)
 app.include_router(user_router,prefix="/api")
 app.include_router(Journal_router,prefix="/api")
+app.include_router(Journalinformation_router,prefix="/api")
 
 origins = [
     "http://localhost:8000",

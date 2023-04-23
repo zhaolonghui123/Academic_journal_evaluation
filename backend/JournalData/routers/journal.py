@@ -3,8 +3,7 @@ from JournalData import models,schemas
 from User.database import SessionLocal
 from sqlalchemy.orm import Session
 from fastapi.responses import FileResponse
-import os
-from pathlib import Path
+
 router = APIRouter()
 
 def get_db():
