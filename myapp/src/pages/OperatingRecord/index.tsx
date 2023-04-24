@@ -23,6 +23,12 @@ interface JournalData {
 
 const JournalList: React.FC = () => {
   // 初始化数据
+  const [open, setOpen] = useState(false);
+  const [modalText, setModalText] = useState('Content of the modal');
+
+  const handleclose = () => {
+    setOpen(false);
+  };
   const [data, setData] = useState<JournalData[]>([
     {
       "id": 1,
@@ -55,8 +61,9 @@ const JournalList: React.FC = () => {
     console.log(formData);
     axios.post(journalURL.createjournal+`?journalname=${formData.journalname}`)
     .then((res)=>{
-      console.log(res.data)
+      setModalText(res.data.msg);
     })
+    setOpen(true);
     setVisible(false);
   };
 
@@ -93,6 +100,13 @@ const JournalList: React.FC = () => {
       <div style={{ marginBottom: '24px' }}>
         <Button type="primary" onClick={() => setVisible(true)}>创建新 Card</Button>
       </div>
+      <Modal
+        title="Title"
+        open={open}
+        onCancel={handleclose}
+      >
+        <p>{modalText}</p>
+      </Modal>
 
       {data.map(renderItem)}
 
