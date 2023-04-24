@@ -10,4 +10,6 @@ export const journalURL = {
     getPapercount:baseURL + "/journal/get",
     gettest: baseURL + "/journal/test",
     getjournalInfo: baseURL + "/journalinformation/get",
+    getjournal: baseURL + "/journalinformation/list/get",
+    createjournal: baseURL + "/journalinformation/list/create",
 }

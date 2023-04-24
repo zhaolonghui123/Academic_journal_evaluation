@@ -64,6 +64,7 @@ def get_journal(db: Session = Depends(get_db)):
         data.append(
             {
                 'id':id,
+                '期刊名称': item.journalname,
                 '主办单位': item.host_unit,
                 '主编': item.editor,
                 '出版周期': item.period,
@@ -107,31 +108,12 @@ def create_journal(journalname:str,db: Session = Depends(get_db)):
     if isexist:
         return {'msg':"期刊已存在"}
     else:
-        crawl_journal_info(journalname)
-        return {'msg':"添加成功"}
-        # db_Journallist = db.query(models.JournalList).all()
-        # data = []
-        # id = 1
-        # for item in db_Journallist:
-        #     data.append(
-        #         {
-        #             'id': id,
-        #             '主办单位': item.host_unit,
-        #             '主编': item.editor,
-        #             '出版周期': item.period,
-        #             '国际刊号': item.intl_code,
-        #             '国内刊号': item.dom_code,
-        #             '影响因子': item.impact_factor,
-        #             '文献量': item.document_count,
-        #             '被引量': item.cited_count,
-        #             '下载量': item.download_count,
-        #             '基金论文量': item.fund_count,
-        #             '电话': item.telephone,
-        #             '地址': item.address
-        #         }
-        #     )
-        #     id += 1
-        # return data
+        try:
+            crawl_journal_info(journalname)
+        except Exception as e:
+            return {'msg': '无法获取该期刊'}
+        else:
+            return {'msg': "添加成功"}
 
 
 @router.delete('/list/delete')
