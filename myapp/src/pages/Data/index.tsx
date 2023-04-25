@@ -1,31 +1,61 @@
 import Chart2 from './component/chart2';
 import Chart3 from './component/chart3';
 import { Card, Select, Space, Typography } from 'antd';
-import { useState,useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import React from 'react';
 import { journalURL } from '@/services/url';
 import axios from "axios"
 import Chart1 from './component/chart1';
 import { ProCard } from '@ant-design/pro-components';
-const handleChange = (value: string) => {
-  console.log(`selected ${value}`);
-};
+
+
+
 // const data1 = [
 // ];
 const Data: React.FC = () => {
   
-  const [data1,SetData1] = useState([])
-  const [data2,SetData2] = useState([])
-  useEffect(()=>{
+  const [data1, setData1] = useState([]);
+  const [data2, setData2] = useState([]);
+  const [journalname1, setName1] = useState('中学数学月刊');
+  const [journalname2, setName2] = useState('数学通报');
+  const [options,SetOption] = useState([])
+
+  const handleChange1 = (value: string) => {
+    //console.log(`selected ${value}`);
+    setName1(value);
+  };
+  const handleChange2 = (value: string) => {
+    //console.log(`selected ${value}`);
+    setName2(value);
+  };
+  
+
+  const getOption = useCallback(()=>{
+    axios.get(journalURL.getjournalnamelist)
+    .then((res)=>{
+      SetOption(res.data)
+    });
+  }, []);
+
+  const getData1 = useCallback(()=>{
     axios.get(journalURL.getPapercount)
     .then((res)=>{
-      SetData1(res.data)
+      setData1(res.data)
     });
-    axios.get(journalURL.gettest)
+  }, []);
+  
+  const getData2 = useCallback(()=>{
+    axios.post(journalURL.getjournalscore+`?journalname1=${journalname1}&journalname2=${journalname2}`)
     .then((res)=>{
-      SetData2(res.data)
+      setData2(res.data)
     });
-  },[])
+  }, [journalname1, journalname2]);
+
+  useEffect(()=>{
+    getData1();
+    getData2();
+    getOption();
+  }, [getData1, getData2, getOption])
   
   return (<>
     <ProCard
@@ -54,22 +84,14 @@ const Data: React.FC = () => {
           <Select
             defaultValue="中学数学月刊"
             style={{ width: 120 }}
-            onChange={handleChange}
-            options={[
-              { value: '中学数学月刊', label: '中学数学月刊' },
-              { value: '数学教育学报', label: '数学教育学报' },
-              { value: '数学通报', label: '数学通报' },
-            ]}
+            onChange={handleChange1}
+            options={options}
           />
           <Select
-            defaultValue="中学数学月刊"
+            defaultValue="数学通报"
             style={{ width: 120 }}
-            onChange={handleChange}
-            options={[
-              { value: '中学数学月刊', label: '中学数学月刊' },
-              { value: '数学教育学报', label: '数学教育学报' },
-              { value: '数学通报', label: '数学通报' },
-            ]}
+            onChange={handleChange2}
+            options={options}
           />
         </Space> 
       </div>

@@ -32,3 +32,16 @@ class JournalList(Base):
     fund_count = Column(String(250))
     telephone = Column(String(250))
     address = Column(String(250))
+class Journalscore(Base):
+    # 表名
+    __tablename__ = "Journalscore"
+
+    # 2、创建模型属性/列，使用Column来表示 SQLAlchemy 中的默认值。
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
+    journalname = Column(String(250), unique=True)
+    impact_factor = Column(String(250))
+    document_count = Column(String(250))
+    cited_count = Column(String(250))
+    download_count = Column(String(250))
+    fund_count = Column(String(250))
+    #clout_index = Column(String(250))

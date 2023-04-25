@@ -12,4 +12,6 @@ export const journalURL = {
     getjournalInfo: baseURL + "/journalinformation/get",
     getjournal: baseURL + "/journalinformation/list/get",
     createjournal: baseURL + "/journalinformation/list/create",
+    getjournalscore: baseURL + "/journalinformation/score/get",
+    getjournalnamelist: baseURL + "/journalinformation/list/getjournalnamelist"
 }

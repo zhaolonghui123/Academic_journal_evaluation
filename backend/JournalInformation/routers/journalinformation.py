@@ -4,6 +4,7 @@ from User.database import SessionLocal
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import text
 from DataCrawler.Journal import crawl_journal_info
+import math
 router = APIRouter()
 
 def get_db():
@@ -91,7 +92,8 @@ def get_journalname_list(db: Session = Depends(get_db)):
     data = []
     for item in Journalnamelist:
         data.append(
-            item[0]
+            {"value": item[0], "label": item[0]}
+
         )
     return data
 
@@ -130,3 +132,64 @@ def refresh_journal(db: Session = Depends(get_db)):
     for item in Journalnamelist:
         crawl_journal_info(item[0])
     return {'msg':"更新完成"}
+
+@router.get('/score/init')
+def init_journalscore(db: Session = Depends(get_db)):
+    journals = db.query(models.JournalList).all()
+    for column in ['impact_factor', 'document_count', 'cited_count', 'download_count', 'fund_count']:
+        min_val = float('inf')
+        max_val = float('-inf')
+        for journal in journals:
+            val = getattr(journal, column)
+            if val is None:
+                continue
+            val = float(val)
+            if val < min_val:
+                min_val = val
+            if val > max_val:
+                max_val = val
+
+        for journal in journals:
+            existing_score = db.query(models.Journalscore).filter(
+                models.Journalscore.journalname == journal.journalname
+            ).first()
+            normalized_value = None
+            if existing_score:
+                score = existing_score
+            else:
+                score = models.Journalscore(
+                    journalname=journal.journalname,
+                    impact_factor=None,
+                    document_count=None,
+                    cited_count=None,
+                    download_count=None,
+                    fund_count=None,
+                )
+            value = getattr(journal, column)
+            if value is None:
+                continue
+            value = float(value)
+            #normalized_value = 1 - math.sqrt(1 - ((value - min_val) / (max_val - min_val))**2 )
+            #normalized_value = (value - 0) / (max_val - 0)*10
+            normalized_value = (value/max_val)*10
+            setattr(score, column, str(normalized_value))
+            db.add(score)
+    db.commit()
+@router.post('/score/get')
+def get_score(journalname1:str="中学数学月刊",journalname2:str="数学通报",db: Session = Depends(get_db)):
+    db_score1 = db.query(models.Journalscore).filter(models.Journalscore.journalname == journalname1 ).all()
+    db_score2 = db.query(models.Journalscore).filter(models.Journalscore.journalname == journalname2).all()
+    data = []
+    for item in db_score1:
+        data.append({"item": "cited_count","user": item.journalname,"score": round(float(item.cited_count),2)})
+        data.append({"item": "fund_count","user": item.journalname,"score": round(float(item.fund_count),2)})
+        data.append({"item": "document_count", "user": item.journalname, "score": round(float(item.document_count),2)})
+        data.append({"item": "download_count", "user": item.journalname, "score": round(float(item.download_count),2)})
+        data.append({"item": "impact_factor", "user": item.journalname, "score": round(float(item.impact_factor),2)})
+    for item in db_score2:
+        data.append({"item": "cited_count", "user": item.journalname, "score": round(float(item.cited_count), 2)})
+        data.append({"item": "fund_count", "user": item.journalname, "score": round(float(item.fund_count), 2)})
+        data.append({"item": "document_count", "user": item.journalname, "score": round(float(item.document_count), 2)})
+        data.append({"item": "download_count", "user": item.journalname, "score": round(float(item.download_count), 2)})
+        data.append({"item": "impact_factor", "user": item.journalname, "score": round(float(item.impact_factor), 2)})
+    return data

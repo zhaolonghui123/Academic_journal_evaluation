@@ -26,7 +26,7 @@ const Chart3: React.FC<dataProps> = ({data:data}) => {
       score: {
         alias: '分数',
         min: 0,
-        max: 80,
+        max: 10,
       },
     },
     xAxis: {
