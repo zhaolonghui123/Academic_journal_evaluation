@@ -9,7 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import time
 import pymysql
 
-def search_cnki_journal(journal_name, years):
+def search_cnki_journal(journal_name, start_year):
     # 建立数据库连接
     conn = pymysql.connect(
         host='localhost',
@@ -26,7 +26,8 @@ def search_cnki_journal(journal_name, years):
     chrome_options.add_argument('--disable-blink-features=AutomationControlled') # 禁用Selenium检测
 
     data = {}
-    for y in years:
+    current_year = int(time.strftime('%Y', time.localtime()))
+    for y in range(start_year, current_year + 1):
         driver = webdriver.Chrome(options=chrome_options)
         driver.get('https://ref.cnki.net/REF/AdvSearch/Index')
         time.sleep(1)
@@ -60,14 +61,19 @@ def search_cnki_journal(journal_name, years):
                 count, year = item.text.split('\n')
                 if int(year) not in data:
                     data[int(year)] = 0
+                # 将文章数写入到对应年份的数据中
                 data[int(year)] += int(re.findall(count_pattern, item.text)[0])
+
+
+        # 写入数据库
+        cursor.execute(
+            f"UPDATE journal_citation SET two_years_citation={data.get(y, 0)} WHERE name='{journal_name}' and year={y}"
+        )
+        conn.commit()
+
         print(f"{y}:{data[int(y)]}")
         driver.close()
 
     cursor.close()
     conn.close()
     return data
-
-journal_name = "中学数学月刊"
-years = ["2018","2019","2020","2021","2022"]
-data = search_cnki_journal(journal_name, years)

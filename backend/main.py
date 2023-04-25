@@ -4,8 +4,9 @@ import uvicorn
 from User.routers import router as user_router
 from JournalData.routers import router as Journal_router
 from JournalInformation.routers import router as  Journalinformation_router
+from Citation.routers import router as Journalcitation_router
 from fastapi import FastAPI
-import User,JournalData
+import User,JournalData,Citation
 from User.database import engine
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -16,6 +17,7 @@ JournalData.models.Base.metadata.create_all(engine)
 app.include_router(user_router,prefix="/api")
 app.include_router(Journal_router,prefix="/api")
 app.include_router(Journalinformation_router,prefix="/api")
+app.include_router(Journalcitation_router,prefix="/api")
 
 origins = [
     "http://localhost:8000",
