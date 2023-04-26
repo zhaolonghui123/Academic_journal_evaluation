@@ -42,14 +42,63 @@ def update_impact_factor(db: Session = Depends(get_db)):
 @router.post('/create')
 def create(journalname:str,startyear:int):
 
-    try:
-        save_data_to_db(journalname, startyear)
-        search_cnki_journal(journalname, startyear)
-        save_doc_count_db(journalname, startyear)
-    except Exception:
-        return {'msg':'False'}
-    else:
-        return {'msg':'添加成功'}
+    #try:
+    save_data_to_db(journalname, startyear)
+    search_cnki_journal(journalname, startyear)
+    save_doc_count_db(journalname, startyear)
+    # except Exception:
+    #     return {'msg':'False'}
+    # else:
+    #     return {'msg':'添加成功'}
+
+@router.get('/doc_count')
+def get_doc_count(db: Session = Depends(get_db)):
+    current_year = datetime.now().year
+    data= []
+    result = db.query(models.journalcitation.name, models.journalcitation.doc_count, models.journalcitation.year).filter(and_(models.journalcitation.year<current_year,models.journalcitation.year>current_year-6)).all()
+    for item in result:
+        data.append({'year':item.year,'value':item.doc_count,'category':item.name})
+    return data
+
+
+@router.get('/cited_count')
+def get_cited_count(db: Session = Depends(get_db)):
+    current_year = datetime.now().year
+    data= []
+    result = db.query(models.journalcitation.name, models.journalcitation.cite_count, models.journalcitation.year).filter(and_(models.journalcitation.year<current_year,models.journalcitation.year>current_year-6)).all()
+    for item in result:
+        data.append({'year':item.year,'value':item.cite_count,'category':item.name})
+    return data
+
+
+@router.get('/IF')
+def get_impact_factor(db: Session = Depends(get_db)):
+    current_year = datetime.now().year
+    data= []
+    result = db.query(models.journalcitation.name, models.journalcitation.impact_factor, models.journalcitation.year).filter(and_(models.journalcitation.year<current_year,models.journalcitation.year>current_year-6)).all()
+    for item in result:
+        data.append({'year':item.year,'value':item.impact_factor,'category':item.name})
+    return data
+
+
+@router.get('/avg_cite_count')
+def get_avg_cite_count(db: Session = Depends(get_db)):
+    current_year = datetime.now().year
+    data= []
+    result = db.query(models.journalcitation.name, models.journalcitation.avg_cite_count, models.journalcitation.year).filter(and_(models.journalcitation.year<current_year,models.journalcitation.year>current_year-6)).all()
+    for item in result:
+        data.append({'year':item.year,'value':item.avg_cite_count,'category':item.name})
+    return data
+
+
+@router.get('/two_years_citation')
+def get_two_years_citation(db: Session = Depends(get_db)):
+    current_year = datetime.now().year
+    data= []
+    result = db.query(models.journalcitation.name, models.journalcitation.two_years_citation, models.journalcitation.year).filter(and_(models.journalcitation.year<current_year,models.journalcitation.year>current_year-6)).all()
+    for item in result:
+        data.append({'year':item.year,'value':item.two_years_citation,'category':item.name})
+    return data
 
 
 def update_impact_factor(db: Session = Depends(get_db)):

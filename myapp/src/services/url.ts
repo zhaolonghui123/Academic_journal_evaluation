@@ -15,3 +15,12 @@ export const journalURL = {
     getjournalscore: baseURL + "/journalinformation/score/get",
     getjournalnamelist: baseURL + "/journalinformation/list/getjournalnamelist"
 }
+
+export const citationURL = {
+    getDocCount: baseURL + "/journalcitation/doc_count",
+    getCiteCount: baseURL + "/journalcitation/cited_count",
+    getIF: baseURL + "/journalcitation/IF",
+    getAvgCiteCount: baseURL + "/journalcitation/avg_cite_count",
+    getTwoYearsCitation: baseURL + "/journalcitation/two_years_citation",
+    getAll: baseURL + "/journalcitation/get",
+}

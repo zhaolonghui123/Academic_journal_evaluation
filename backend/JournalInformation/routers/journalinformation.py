@@ -119,8 +119,8 @@ def create_journal(journalname:str,db: Session = Depends(get_db)):
 
 
 @router.delete('/list/delete')
-def del_journal(papername:str,db: Session = Depends(get_db)):
-    db.query(models.JournalList).filter(models.JournalList.papername == papername).delete(synchronize_session=False)
+def del_journal(name:str,db: Session = Depends(get_db)):
+    db.query(models.JournalList).filter(models.JournalList.journalname == name).delete()
     db.commit()
     return {"msg": "已经删除"}
 
