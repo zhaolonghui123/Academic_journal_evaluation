@@ -136,6 +136,25 @@ def refresh_journal(db: Session = Depends(get_db)):
 @router.get('/score/init')
 def init_journalscore(db: Session = Depends(get_db)):
     journals = db.query(models.JournalList).all()
+
+    # 遍历 JournalList 表中的所有期刊
+    for journal in journals:
+        existing_score = db.query(models.Journalscore).filter(
+            models.Journalscore.journalname == journal.journalname
+        ).first()
+        if not existing_score:
+            score = models.Journalscore(
+                journalname=journal.journalname,
+                impact_factor=None,
+                document_count=None,
+                cited_count=None,
+                download_count=None,
+                fund_count=None,
+            )
+            db.add(score)
+    db.commit()
+
+    # 遍历 JournalList 表中的五个数值类型数据并进行最大最小值归一化
     for column in ['impact_factor', 'document_count', 'cited_count', 'download_count', 'fund_count']:
         min_val = float('inf')
         max_val = float('-inf')
@@ -153,25 +172,15 @@ def init_journalscore(db: Session = Depends(get_db)):
             existing_score = db.query(models.Journalscore).filter(
                 models.Journalscore.journalname == journal.journalname
             ).first()
-            normalized_value = None
-            if existing_score:
-                score = existing_score
-            else:
-                score = models.Journalscore(
-                    journalname=journal.journalname,
-                    impact_factor=None,
-                    document_count=None,
-                    cited_count=None,
-                    download_count=None,
-                    fund_count=None,
-                )
+            if not existing_score:
+                continue
+
+            score = existing_score
             value = getattr(journal, column)
             if value is None:
                 continue
             value = float(value)
-            #normalized_value = 1 - math.sqrt(1 - ((value - min_val) / (max_val - min_val))**2 )
-            #normalized_value = (value - 0) / (max_val - 0)*10
-            normalized_value = (value/max_val)*10
+            normalized_value = (value / max_val) * 10
             setattr(score, column, str(normalized_value))
             db.add(score)
     db.commit()

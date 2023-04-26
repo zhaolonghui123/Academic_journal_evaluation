@@ -67,10 +67,10 @@ def save_data_to_db(name, start_year):
                 values = (name, y, cite_count, avg_cite_count)
                 cursor.execute(sql, values)
                 conn.commit()
-                print(f"期刊名称：{name}")
-                print(f"年份：{y}")
-                print(f"总被引次数：{cite_count}")
-                print(f"平均被引次数：{avg_cite_count}")
+                # print(f"期刊名称：{name}")
+                # print(f"年份：{y}")
+                # print(f"总被引次数：{cite_count}")
+                # print(f"平均被引次数：{avg_cite_count}")
             except Exception as e:
                 print(str(e))
 
