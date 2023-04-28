@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 from DataCrawler.impact_factor import search_cnki_journal
 from DataCrawler.Journalcitation import save_data_to_db
 from DataCrawler.doc_count import save_doc_count_db
+from DataCrawler.cited_count import five_cited_count
 from sqlalchemy.sql import text
 
 
@@ -46,6 +47,7 @@ def create(journalname:str,startyear:int):
     save_data_to_db(journalname, startyear)
     search_cnki_journal(journalname, startyear)
     save_doc_count_db(journalname, startyear)
+    five_cited_count(journalname)
     # except Exception:
     #     return {'msg':'False'}
     # else:

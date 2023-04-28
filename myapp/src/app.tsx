@@ -7,6 +7,7 @@ import type { RunTimeLayoutConfig } from 'umi';
 import { history, Link } from 'umi';
 import defaultSettings from '../config/defaultSettings';
 import { currentUser as queryCurrentUser } from './services/ant-design-pro/api';
+import { Button } from 'antd';
 
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/user/login';
@@ -30,9 +31,8 @@ export async function getInitialState(): Promise<{
       const msg = await queryCurrentUser();
       return msg.data;
     } catch (error) {
-      history.push(loginPath);
+      return undefined;
     }
-    return undefined;
   };
   // 如果不是登录页面，执行
   if (history.location.pathname !== loginPath) {
@@ -71,7 +71,17 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     // unAccessible: <div>unAccessible</div>,
     // 增加一个 loading 的状态
     childrenRender: (children, props) => {
-      // if (initialState?.loading) return <PageLoading />;
+      // 如果未登录，则展示 welcome 页；已登录则展示子组件
+      if (!initialState?.currentUser && !props.location?.pathname?.includes('/login')) {
+        return (
+          <div style={{ textAlign: 'center', marginTop: 120 }}>
+            <h1>Welcome to My App</h1>
+            <Button onClick={() => {
+              history.push(loginPath);
+            }}>登录</Button>
+          </div>
+        );
+      }
       return (
         <>
           {children}
@@ -94,3 +104,4 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     ...initialState?.settings,
   };
 };
+

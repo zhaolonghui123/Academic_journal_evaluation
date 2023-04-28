@@ -60,6 +60,10 @@ def save_doc_count_db(name, start_year):
             f"UPDATE journal_citation SET doc_count={data.get(y, 0)} WHERE name='{name}' and year={y}"
         )
         conn.commit()
+    cursor.execute(
+        f"UPDATE journal SET document_count={data.get(y-5, 0)+data.get(y-1,0)+data.get(y-2,0)+data.get(y-3,0)+data.get(y-4,0)} WHERE journalname='{name}'"
+    )
+    conn.commit()
     cursor.close()
     conn.close()
 

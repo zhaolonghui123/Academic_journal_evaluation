@@ -69,6 +69,9 @@ def search_cnki_journal(journal_name, start_year):
         cursor.execute(
             f"UPDATE journal_citation SET two_years_citation={data.get(y-2, 0)+data.get(y-1, 0)} WHERE name='{journal_name}' and year={y}"
         )
+        cursor.execute(
+            f"UPDATE journal SET cited_count={data.get(y - 4, 0) + data.get(y - 3, 0) + data.get(y - 2, 0) + data.get(y - 1, 0) + data.get(y - 5, 0)} WHERE journalname='{journal_name}'"
+        )
         conn.commit()
         driver.close()
 
